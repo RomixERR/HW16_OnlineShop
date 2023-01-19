@@ -131,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataBases\CustomersDatabase.mdf" />
+    <Content Include="DataBases\CustomersDatabase_log.ldf">
+      <DependentUpon>CustomersDatabase.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="DataBases\OrdersDatabase.accdb" />
   </ItemGroup>
   <ItemGroup>
