@@ -33,9 +33,11 @@ namespace OnlineShop
             dataGridOrders.CellEditEnding += rep.OrdersCellEditEnding;
             dataGridCustomers.ItemsSource = rep.CustomersTable.DefaultView;
             dataGridCustomers.CellEditEnding += rep.CustomersCellEditEnding;
-            //button1.Click += (s, e) => { rep.SetFindForEmailAccessSelectCommand("111@mail.ru"); };
+            
             btEmailFilter.Click += (s, e) => {rep.SetFindForEmailAccessSelectCommand(GetSelectedString(dataGridCustomers.SelectedItem,"Email")); };
             btNoFilter.Click += (s, e) => { rep.SetTablesDefault(); };
+
+            
         }
 
         private string GetSelectedString(object selectedItem, string findStringToCell)
@@ -63,23 +65,23 @@ namespace OnlineShop
         public DataTable OrdersTable;
 
         public string AccessConnectionString { get; private set; }
-        public string AccessSelectString { get; private set; }
-        public string AccessUpdateString { get; private set; }
-        public OleDbCommand AccessSelectCommand { get; private set; }
-        public OleDbCommand AccessUpdateCommand { get; private set; }
+        //public string AccessSelectString { get; private set; }
+        //public string AccessUpdateString { get; private set; }
+        //public OleDbCommand AccessSelectCommand { get; private set; }
+        //public OleDbCommand AccessUpdateCommand { get; private set; }
 
         public string LocalDBConnectionString { get; private set; }
-        public string LocalDBSelectString { get; private set; }
-        public string LocalDBUpdateString { get; private set; }
-        public SqlCommand LocalDBSelectCommand { get; private set; }
-        public SqlCommand LocalDBUpdateCommand { get; private set; }
+        //public string LocalDBSelectString { get; private set; }
+        //public string LocalDBUpdateString { get; private set; }
+        //public SqlCommand LocalDBSelectCommand { get; private set; }
+        //public SqlCommand LocalDBUpdateCommand { get; private set; }
 
-        private MainWindow window;
+        
 
 
         public Repository(string pathToDB)
         {
-                //this.window = window;
+                
                 AccessConnectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;" +
                                          $@"Data Source={pathToDB}\OrdersDatabase.accdb;" +
                                          $@"Jet OLEDB:Database Password=123;";
@@ -97,6 +99,7 @@ namespace OnlineShop
             cConnection.StateChange += Connection_StateChange;
 
             SetTablesDefault();
+
         }
 
         private void Connection_StateChange(object sender, StateChangeEventArgs e)
@@ -131,34 +134,37 @@ namespace OnlineShop
         {
             SetDefaultAccessSelectCommand();
             SetDefaultAccessUpdateCommand();
+            SetAccessInsertCommand();
             SetDefaultLocalDBSelectCommand();
             SetDefaultLocalDBUpdateCommand();
+            SetLocalDBInsertCommand();
+
             DatabaseQuery();
         }
 
         public void SetDefaultAccessSelectCommand()
         {
-            AccessSelectString = $@"SELECT * FROM Orders;";
-            AccessSelectCommand = new OleDbCommand(AccessSelectString, oConnection);
+            string AccessSelectString = $@"SELECT * FROM Orders;";
+            OleDbCommand AccessSelectCommand = new OleDbCommand(AccessSelectString, oConnection);
             oAdapter.SelectCommand = AccessSelectCommand;
         }
 
         public void SetDefaultLocalDBSelectCommand()
         {
-            LocalDBSelectString = $@"SELECT * FROM Customers;";
-            LocalDBSelectCommand = new SqlCommand(LocalDBSelectString, cConnection);
+            string LocalDBSelectString = $@"SELECT * FROM Customers;";
+            SqlCommand LocalDBSelectCommand = new SqlCommand(LocalDBSelectString, cConnection);
             cAdapter.SelectCommand = LocalDBSelectCommand;
         }
 
         public void SetDefaultAccessUpdateCommand()
         {
-            AccessUpdateString =$"UPDATE Orders SET " +
+            string AccessUpdateString = $"UPDATE Orders SET " +
                                 $" " +
                                 $"Email = @Email, " +
                                 $"ProductCode = @ProductCode, " +
                                 $"NameOfProduct = @NameOfProduct " +
                                 $"WHERE ID = @FindID;";
-            AccessUpdateCommand = new OleDbCommand(AccessUpdateString, oConnection);
+            OleDbCommand AccessUpdateCommand = new OleDbCommand(AccessUpdateString, oConnection);
             AccessUpdateCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
             AccessUpdateCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
             AccessUpdateCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
@@ -166,9 +172,23 @@ namespace OnlineShop
             oAdapter.UpdateCommand = AccessUpdateCommand;
         }
 
+        public void SetAccessInsertCommand()
+        {
+            string AccessInsertCommandString = $"INSERT INTO Orders " +
+                                $"(Email,ProductCode,NameOfProduct) VALUES " +
+                                $"(@Email, " +
+                                $"@ProductCode, " +
+                                $"@NameOfProduct);";
+            OleDbCommand AccessInsertCommand = new OleDbCommand(AccessInsertCommandString, oConnection);
+            AccessInsertCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
+            AccessInsertCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
+            AccessInsertCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
+            oAdapter.InsertCommand = AccessInsertCommand;
+        }
+
         public void SetDefaultLocalDBUpdateCommand()
         {
-            LocalDBUpdateString = $"UPDATE Customers SET " +
+            string LocalDBUpdateString = $"UPDATE Customers SET " +
                                 $" " +
                                 $"LastName = @LastName, " +
                                 $"FirstName = @FirstName, " +
@@ -176,7 +196,7 @@ namespace OnlineShop
                                 $"PhoneNumber = @PhoneNumber, " +
                                 $"Email = @Email " +
                                 $"WHERE ID = @FindID;";
-            LocalDBUpdateCommand = new SqlCommand(LocalDBUpdateString, cConnection);
+            SqlCommand LocalDBUpdateCommand = new SqlCommand(LocalDBUpdateString, cConnection);
             LocalDBUpdateCommand.Parameters.Add("@LastName",SqlDbType.NVarChar, 0, "LastName");
             LocalDBUpdateCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
             LocalDBUpdateCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
@@ -186,12 +206,30 @@ namespace OnlineShop
             cAdapter.UpdateCommand = LocalDBUpdateCommand;
         }
 
+        public void SetLocalDBInsertCommand()
+        {
+            string LocalDBInsertString = $"INSERT INTO Customers " +
+                                $"(LastName, FirstName, MiddleName, PhoneNumber, Email) VALUES " +
+                                $"(@LastName, " +
+                                $"@FirstName, " +
+                                $"@MiddleName, " +
+                                $"@PhoneNumber, " +
+                                $"@Email);";
+            SqlCommand LocalDBInsertCommand = new SqlCommand(LocalDBInsertString, cConnection);
+            LocalDBInsertCommand.Parameters.Add("@LastName", SqlDbType.NVarChar, 0, "LastName");
+            LocalDBInsertCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
+            LocalDBInsertCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
+            LocalDBInsertCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int, 0, "PhoneNumber");
+            LocalDBInsertCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 0, "Email");
+            cAdapter.InsertCommand = LocalDBInsertCommand;
+        }
+
         public void SetFindForEmailAccessSelectCommand(string email)
         {
             if (string.IsNullOrEmpty(email)) return;
-            AccessSelectString = $"SELECT * FROM Orders " +
+            string AccessSelectString = $"SELECT * FROM Orders " +
                                  $"WHERE Email = @Email;";
-            AccessSelectCommand = new OleDbCommand(AccessSelectString, oConnection);
+            OleDbCommand AccessSelectCommand = new OleDbCommand(AccessSelectString, oConnection);
             AccessSelectCommand.Parameters.AddWithValue("@Email", email);
             oAdapter.SelectCommand = AccessSelectCommand;
             DatabaseQuery();
