@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineShop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="490" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="177*"/>
@@ -19,14 +19,23 @@
         <DataGrid x:Name="dataGridCustomers" d:ItemsSource="{Binding}"
                   IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" SelectionMode="Single" Grid.Column="0"
                   >
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="Edit" Header="Изменить" Click="CustomersEdit_Click"/>
+                    <MenuItem x:Name="Add" Header="Добавить" Click="CustomersAdd_Click"/>
+                    <MenuItem x:Name="Delete" Header="Удалить" Click="CustomersDelete_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="CID"  Binding="{Binding ID}" Header="ID" IsReadOnly="True"/>
-                <DataGridTextColumn x:Name="CLastName"  Binding="{Binding LastName}" Header="LastName" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="CFirstName"  Binding="{Binding FirstName}" Header="FirstName" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="CMiddleName"  Binding="{Binding MiddleName}" Header="MiddleName" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="CPhoneNumber"  Binding="{Binding PhoneNumber}" Header="PhoneNumber" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="CEmail"  Binding="{Binding Email}" Header="Email" IsReadOnly="false"/>
+                <DataGridTextColumn x:Name="CLastName"  Binding="{Binding LastName}" Header="LastName" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="CFirstName"  Binding="{Binding FirstName}" Header="FirstName" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="CMiddleName"  Binding="{Binding MiddleName}" Header="MiddleName" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="CPhoneNumber"  Binding="{Binding PhoneNumber}" Header="PhoneNumber" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="CEmail"  Binding="{Binding Email}" Header="Email" IsReadOnly="True"/>
             </DataGrid.Columns>
+
+            
         </DataGrid>
 
         <DataGrid x:Name="dataGridOrders" d:ItemsSource="{Binding}"
@@ -34,14 +43,14 @@
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="OID"  Binding="{Binding ID}" Header="ID" IsReadOnly="True"/>
-                <DataGridTextColumn x:Name="OEmail"  Binding="{Binding Email}" Header="Email" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="OProductCode"  Binding="{Binding ProductCode}" Header="ProductCode" IsReadOnly="false"/>
-                <DataGridTextColumn x:Name="ONameOfProduct"  Binding="{Binding NameOfProduct}" Header="NameOfProduct" IsReadOnly="false"/>
+                <DataGridTextColumn x:Name="OEmail"  Binding="{Binding Email}" Header="Email" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="OProductCode"  Binding="{Binding ProductCode}" Header="ProductCode" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="ONameOfProduct"  Binding="{Binding NameOfProduct}" Header="NameOfProduct" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Border BorderBrush="Black" BorderThickness="1"/>
         <Button x:Name="btEmailFilter" Content="Фильтр по Email" HorizontalAlignment="Left" Margin="22,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
         <Button x:Name="btNoFilter" Content="Сбросить фильтр" HorizontalAlignment="Left" Margin="154,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
+        
 
     </Grid>
 </Window>

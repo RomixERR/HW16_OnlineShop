@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineShop.WPF;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
@@ -29,27 +30,18 @@ namespace OnlineShop
             rep = new Repository(@"E:\C#\SKILLBOXC#\HW16\OnlineShop\DataBases");
 
             dataGridCustomers.ItemsSource = rep.CustomersTable.DefaultView;
-            dataGridCustomers.CellEditEnding += rep.CustomersCellEditEnding;
+            //dataGridCustomers.CellEditEnding += rep.CustomersCellEditEnding;
+
 
             dataGridOrders.ItemsSource = rep.OrdersTable.DefaultView;
-            dataGridOrders.CellEditEnding += rep.OrdersCellEditEnding;
+            dataGridOrders.CellEditEnding += rep.OrdersCellEditEnding; ///
 
 
             btEmailFilter.Click += (s, e) => {rep.SetFindForEmailAccessSelectCommand(GetSelectedString(dataGridCustomers.SelectedItem,"Email")); };
             btNoFilter.Click += (s, e) => { rep.SetTablesDefault(); };
-
+            //btSave.Click += rep.BtSave_Click;
             
         }
-
-        //private void DataGridCustomers_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    Debug.WriteLine("CellEditEnding");
-        //}
-
-        //private void DataGridCustomers_CurrentCellChanged(object sender, EventArgs e)
-        //{
-        //    Debug.WriteLine("CurrentCellChanged");
-        //}
 
         private string GetSelectedString(object selectedItem, string findStringToCell)
         {
@@ -59,6 +51,30 @@ namespace OnlineShop
             return drw[findStringToCell].ToString();
         }
 
+        private void CustomersEdit_Click(object sender, RoutedEventArgs e)
+        {
+            DataRowView dataRowView = (DataRowView)dataGridCustomers.SelectedItem;
+            EditCustomerRowWindow window = new EditCustomerRowWindow(dataRowView);
+            if (window.ShowDialog() == true) rep.CustomersCellEditEnding(null,null);
+        }
+
+        private void CustomersAdd_Click(object sender, RoutedEventArgs e)
+        {
+            //rep.dataRowView = (DataRowView)dataGridCustomers.Items[dataGridCustomers.Items.Count-1];
+            DataRow r = rep.CustomersTable.NewRow();
+            
+            EditCustomerRowWindow window = new EditCustomerRowWindow(r);
+            if (window.ShowDialog() == true)
+            {
+                rep.CustomersTable.Rows.Add(r);
+                rep.CustomersCellEditEnding(null, null);
+            }
+        }
+
+        private void CustomersDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 
@@ -87,7 +103,7 @@ namespace OnlineShop
         //public SqlCommand LocalDBSelectCommand { get; private set; }
         //public SqlCommand LocalDBUpdateCommand { get; private set; }
 
-
+        //public DataRowView dataRowView;
 
 
         public Repository(string pathToDB)
@@ -126,23 +142,47 @@ namespace OnlineShop
 
         public void OrdersCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            oAdapter.Update(OrdersTable);
+            try
+            {
+                oAdapter.Update(OrdersTable);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR OrdersCellEditEnding: {ex.Message}");
+            }
+            
         }
+
 
         public void CustomersCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            cAdapter.Update(CustomersTable);
+            try
+            {
+                cAdapter.Update(CustomersTable);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR CustomersCellEditEnding: {ex.Message}");
+            }
         }
 
-        private void DatabaseQuery()
+        //public void BtSave_Click(object sender, RoutedEventArgs e)
+        //{
+        //    oAdapter.Update(OrdersTable);
+        //}
+
+        private async Task DatabaseQuery()
         {
-            oConnection.Open();
-            OrdersTable.Clear();
+            var oCTask = oConnection.OpenAsync();
+            OrdersTable.Clear();           
+
+            var cCTask = cConnection.OpenAsync();
+            CustomersTable.Clear();
+
+            await Task.WhenAll(oCTask, cCTask);
+
             oAdapter.Fill(OrdersTable);
             oConnection.Close();
-
-            cConnection.Open();
-            CustomersTable.Clear();
             cAdapter.Fill(CustomersTable);
             cConnection.Close();
         }
@@ -218,12 +258,13 @@ namespace OnlineShop
                                 $"(@Email, " +
                                 $"@ProductCode, " +
                                 $"@NameOfProduct); " +
-                                $"SET @ID = @@IDENTITY;";
+                                //$"SET @ID = @@IDENTITY;";
+                                $"";
             OleDbCommand AccessInsertCommand = new OleDbCommand(AccessInsertCommandString, oConnection);
             AccessInsertCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
             AccessInsertCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
             AccessInsertCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
-            AccessInsertCommand.Parameters.Add("@ID", OleDbType.Integer, 0, "ID").Direction = ParameterDirection.Output;
+            //AccessInsertCommand.Parameters.Add("@ID", OleDbType.Integer, 0, "ID").Direction = ParameterDirection.Output;
             oAdapter.InsertCommand = AccessInsertCommand;
         }
 

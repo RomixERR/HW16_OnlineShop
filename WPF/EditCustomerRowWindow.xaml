@@ -1,0 +1,45 @@
+﻿<Window x:Class="OnlineShop.WPF.EditCustomerRowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineShop.WPF"
+        mc:Ignorable="d"
+        Title="EditRowWindow" Height="450" Width="671">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="103*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="321*"/>
+            <RowDefinition Height="79*"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="label_Copy" Content="РЕДАКТИРОВАНИЕ ИЛИ ДОБАВЛЕНИЕ НОВОГО КЛИЕНТА" RenderTransformOrigin="0.496,0.548"/>
+        <Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Height="52" Width="141" Click="btOk_Click" Grid.Row="2"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" >
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label1" Content="Фамилия" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbLastName" TextWrapping="Wrap" Text="{Binding Path= LastName}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label2" Content="Имя" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbFirstName" TextWrapping="Wrap" Text="{Binding Path= FirstName}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label3" Content="Отчество" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbMiddleName" TextWrapping="Wrap" Text="{Binding Path= MiddleName}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label4" Content="Телефон" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbPhoneNumber" TextWrapping="Wrap" Text="{Binding Path= PhoneNumber}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label5" Content="Email" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbEmail" TextWrapping="Wrap" Text="{Binding Path= Email}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+        </StackPanel>
+        
+    </Grid>
+</Window>
