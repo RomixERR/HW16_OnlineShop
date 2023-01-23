@@ -73,7 +73,9 @@ namespace OnlineShop
 
         private void CustomersDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            DataRowView dataRowView = (DataRowView)dataGridCustomers.SelectedItem;
+            dataRowView.Delete();
+            rep.CustomersCellEditEnding(null, null);
         }
     }
 
