@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-//using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -29,16 +28,28 @@ namespace OnlineShop
 
             rep = new Repository(@"E:\C#\SKILLBOXC#\HW16\OnlineShop\DataBases");
 
-            dataGridOrders.ItemsSource = rep.OrdersTable.DefaultView;
-            dataGridOrders.CellEditEnding += rep.OrdersCellEditEnding;
             dataGridCustomers.ItemsSource = rep.CustomersTable.DefaultView;
             dataGridCustomers.CellEditEnding += rep.CustomersCellEditEnding;
-            
+
+            dataGridOrders.ItemsSource = rep.OrdersTable.DefaultView;
+            dataGridOrders.CellEditEnding += rep.OrdersCellEditEnding;
+
+
             btEmailFilter.Click += (s, e) => {rep.SetFindForEmailAccessSelectCommand(GetSelectedString(dataGridCustomers.SelectedItem,"Email")); };
             btNoFilter.Click += (s, e) => { rep.SetTablesDefault(); };
 
             
         }
+
+        //private void DataGridCustomers_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //{
+        //    Debug.WriteLine("CellEditEnding");
+        //}
+
+        //private void DataGridCustomers_CurrentCellChanged(object sender, EventArgs e)
+        //{
+        //    Debug.WriteLine("CurrentCellChanged");
+        //}
 
         private string GetSelectedString(object selectedItem, string findStringToCell)
         {
@@ -76,18 +87,18 @@ namespace OnlineShop
         //public SqlCommand LocalDBSelectCommand { get; private set; }
         //public SqlCommand LocalDBUpdateCommand { get; private set; }
 
-        
+
 
 
         public Repository(string pathToDB)
         {
-                
-                AccessConnectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                                         $@"Data Source={pathToDB}\OrdersDatabase.accdb;" +
-                                         $@"Jet OLEDB:Database Password=123;";
-                LocalDBConnectionString =$@"Data Source=(localdb)\MSSQLLocalDB;" +
-                                         $@"AttachDbFilename={pathToDB}\CustomersDatabase.mdf;" +
-                                         $@"Integrated Security=True";
+
+            AccessConnectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+                                     $@"Data Source={pathToDB}\OrdersDatabase.accdb;" +
+                                     $@"Jet OLEDB:Database Password=123;";
+            LocalDBConnectionString = $@"Data Source=(localdb)\MSSQLLocalDB;" +
+                                     $@"AttachDbFilename={pathToDB}\CustomersDatabase.mdf;" +
+                                     $@"Integrated Security=True";
 
             cConnection = new SqlConnection(LocalDBConnectionString);
             cAdapter = new SqlDataAdapter();
@@ -97,6 +108,12 @@ namespace OnlineShop
             OrdersTable = new DataTable("Orders");
             oConnection.StateChange += Connection_StateChange;
             cConnection.StateChange += Connection_StateChange;
+
+            //DateTime burn1 = DateTime.Parse("23.01.1978");
+            //DateTime burn2 = DateTime.Parse("25.11.1983");
+            //TimeSpan ts = burn2 - burn1;
+            //Debug.WriteLine($"================================================ Years: {ts.TotalDays/365}, Days: {ts.TotalDays % 365}");
+
 
             SetTablesDefault();
 
@@ -135,9 +152,11 @@ namespace OnlineShop
             SetDefaultAccessSelectCommand();
             SetDefaultAccessUpdateCommand();
             SetAccessInsertCommand();
+            SetAccessDeleteCommand();
             SetDefaultLocalDBSelectCommand();
             SetDefaultLocalDBUpdateCommand();
             SetLocalDBInsertCommand();
+            SetLocalDBDeleteCommand();
 
             DatabaseQuery();
         }
@@ -168,22 +187,8 @@ namespace OnlineShop
             AccessUpdateCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
             AccessUpdateCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
             AccessUpdateCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
-            AccessUpdateCommand.Parameters.Add("@FindID", OleDbType.Integer, 0, "ID");
+            AccessUpdateCommand.Parameters.Add("@FindID", OleDbType.Integer, 0, "ID").SourceVersion = DataRowVersion.Original;
             oAdapter.UpdateCommand = AccessUpdateCommand;
-        }
-
-        public void SetAccessInsertCommand()
-        {
-            string AccessInsertCommandString = $"INSERT INTO Orders " +
-                                $"(Email,ProductCode,NameOfProduct) VALUES " +
-                                $"(@Email, " +
-                                $"@ProductCode, " +
-                                $"@NameOfProduct);";
-            OleDbCommand AccessInsertCommand = new OleDbCommand(AccessInsertCommandString, oConnection);
-            AccessInsertCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
-            AccessInsertCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
-            AccessInsertCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
-            oAdapter.InsertCommand = AccessInsertCommand;
         }
 
         public void SetDefaultLocalDBUpdateCommand()
@@ -197,13 +202,29 @@ namespace OnlineShop
                                 $"Email = @Email " +
                                 $"WHERE ID = @FindID;";
             SqlCommand LocalDBUpdateCommand = new SqlCommand(LocalDBUpdateString, cConnection);
-            LocalDBUpdateCommand.Parameters.Add("@LastName",SqlDbType.NVarChar, 0, "LastName");
+            LocalDBUpdateCommand.Parameters.Add("@LastName", SqlDbType.NVarChar, 0, "LastName");
             LocalDBUpdateCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
             LocalDBUpdateCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
-            LocalDBUpdateCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int , 0, "PhoneNumber");
+            LocalDBUpdateCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int, 0, "PhoneNumber");
             LocalDBUpdateCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 0, "Email");
-            LocalDBUpdateCommand.Parameters.Add("@FindID", SqlDbType.Int, 0, "ID");
+            LocalDBUpdateCommand.Parameters.Add("@FindID", SqlDbType.Int, 0, "ID").SourceVersion = DataRowVersion.Original;
             cAdapter.UpdateCommand = LocalDBUpdateCommand;
+        }
+
+        public void SetAccessInsertCommand()
+        {
+            string AccessInsertCommandString = $"INSERT INTO Orders " +
+                                $"(Email,ProductCode,NameOfProduct) VALUES " +
+                                $"(@Email, " +
+                                $"@ProductCode, " +
+                                $"@NameOfProduct); " +
+                                $"SET @ID = @@IDENTITY;";
+            OleDbCommand AccessInsertCommand = new OleDbCommand(AccessInsertCommandString, oConnection);
+            AccessInsertCommand.Parameters.Add("@Email", OleDbType.WChar, 0, "Email");
+            AccessInsertCommand.Parameters.Add("@ProductCode", OleDbType.Integer, 0, "ProductCode");
+            AccessInsertCommand.Parameters.Add("@NameOfProduct", OleDbType.WChar, 0, "NameOfProduct");
+            AccessInsertCommand.Parameters.Add("@ID", OleDbType.Integer, 0, "ID").Direction = ParameterDirection.Output;
+            oAdapter.InsertCommand = AccessInsertCommand;
         }
 
         public void SetLocalDBInsertCommand()
@@ -214,13 +235,15 @@ namespace OnlineShop
                                 $"@FirstName, " +
                                 $"@MiddleName, " +
                                 $"@PhoneNumber, " +
-                                $"@Email);";
+                                $"@Email); " +
+                                $"SET @ID = @@IDENTITY;";
             SqlCommand LocalDBInsertCommand = new SqlCommand(LocalDBInsertString, cConnection);
             LocalDBInsertCommand.Parameters.Add("@LastName", SqlDbType.NVarChar, 0, "LastName");
             LocalDBInsertCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
             LocalDBInsertCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
             LocalDBInsertCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int, 0, "PhoneNumber");
             LocalDBInsertCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 0, "Email");
+            LocalDBInsertCommand.Parameters.Add("@ID", SqlDbType.Int, 0, "ID").Direction = ParameterDirection.Output;
             cAdapter.InsertCommand = LocalDBInsertCommand;
         }
 
@@ -235,6 +258,21 @@ namespace OnlineShop
             DatabaseQuery();
         }
 
+        public void SetAccessDeleteCommand()
+        {
+            string AccessDeleteString = $@"DELETE FROM Orders WHERE ID = @ID;";
+            OleDbCommand AccessDeleteCommand = new OleDbCommand(AccessDeleteString, oConnection);
+            AccessDeleteCommand.Parameters.Add("@ID", OleDbType.Integer, 0, "ID");
+            oAdapter.DeleteCommand = AccessDeleteCommand;
+        }
+
+        public void SetLocalDBDeleteCommand()
+        {
+            string LocalDBDeleteString = $@"DELETE FROM Customers WHERE ID = @ID;";
+            SqlCommand LocalDBDeleteCommand = new SqlCommand(LocalDBDeleteString, cConnection);
+            LocalDBDeleteCommand.Parameters.Add("@ID", SqlDbType.Int, 0, "ID");
+            cAdapter.DeleteCommand = LocalDBDeleteCommand;
+        }
 
 
     }
