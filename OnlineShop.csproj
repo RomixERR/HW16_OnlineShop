@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="WPF\Repository.cs" />
     <Page Include="WPF\EditCustomerRowWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +107,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FakeUser.cs" />
+    <Compile Include="FakeUserDataset.cs" />
     <Compile Include="WPF\EditCustomerRowWindow.xaml.cs">
       <DependentUpon>EditCustomerRowWindow.xaml</DependentUpon>
     </Compile>
