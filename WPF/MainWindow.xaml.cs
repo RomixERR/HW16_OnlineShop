@@ -1,5 +1,8 @@
 ﻿using OnlineShop.WPF;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 
 namespace OnlineShop
@@ -79,6 +82,48 @@ namespace OnlineShop
             rep.OrdersAdapterUpdate();
         }
         #endregion
+
+
+        private void btFakeUsers_Click(object sender, RoutedEventArgs e)
+        {
+            DataRow dataRow;
+            int amountGetUsers = 5;
+            FakeUsersLite.FakeUser fakeUser = new FakeUsersLite.FakeUser(FakeUsersLite.FakeUser.Egender.Male);
+            for (int i = 0; i < amountGetUsers; i++)
+            {
+                dataRow = rep.CustomersTable.NewRow();
+                dataRow["LastName"] = fakeUser.GetLName();
+                dataRow["FirstName"] = fakeUser.GetFName();
+                dataRow["MiddleName"] = fakeUser.GetMName();
+                dataRow["PhoneNumber"] = fakeUser.GetPhone();
+                dataRow["Email"] = fakeUser.GetEmail();
+                rep.CustomersTable.Rows.Add(dataRow);
+            }           
+            rep.CustomersAdapterUpdate();           
+        }
+
+        private void btFakeOrders_Click(object sender, RoutedEventArgs e)
+        {
+            int countOfAllRows = rep.CustomersTable.Rows.Count;
+            int amountGetUsers = 5;
+            int maxProductCodeForGen = 1000;
+            List<string> Emails = new List<string>();
+            Random r = new Random();
+            DataRow dataRow;
+            FakeUsersLite.FakeUser fakeUser = new FakeUsersLite.FakeUser(FakeUsersLite.FakeUser.Egender.Thing);
+
+            for (int i = 0; i < amountGetUsers; i++)
+            {
+                DataRow row = rep.CustomersTable.Rows[r.Next(0, countOfAllRows)];
+                dataRow = rep.OrdersTable.NewRow();
+                dataRow["Email"] = (string)row["Email"];
+                dataRow["ProductCode"] = r.Next(0, maxProductCodeForGen);
+                dataRow["NameOfProduct"] = fakeUser.GetFName();
+                rep.OrdersTable.Rows.Add(dataRow);
+            }
+
+            rep.OrdersAdapterUpdate();
+        }
     }
 }
  
