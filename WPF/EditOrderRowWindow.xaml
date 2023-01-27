@@ -1,0 +1,37 @@
+﻿<Window x:Class="OnlineShop.WPF.EditOrderRowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineShop.WPF"
+        mc:Ignorable="d"
+        Title="EditOrderRowWindow" Height="450" Width="671" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="103*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="321*"/>
+            <RowDefinition Height="79*"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="label_Copy" Content="РЕДАКТИРОВАНИЕ ИЛИ ДОБАВЛЕНИЕ ПОКУПКИ" RenderTransformOrigin="0.496,0.548"/>
+        <Button x:Name="btOk" Content="Окончание редактирования" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Height="52" Width="231" Click="btOk_Click" Grid.Row="2"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" >
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label1" Content="EMail заказчика" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbEmail" TextWrapping="Wrap" Text="{Binding Path= Email}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label2" Content="Код продукта" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbProductCode" TextWrapping="Wrap" Text="{Binding Path= ProductCode}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="label3" Content="Наименование продукта" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>
+                <TextBox x:Name="tbNameOfProduct" TextWrapping="Wrap" Text="{Binding Path= NameOfProduct}" VerticalAlignment="Top" Width="379" Height="37" Grid.Row="1"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>

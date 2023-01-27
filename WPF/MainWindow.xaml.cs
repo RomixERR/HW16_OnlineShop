@@ -42,7 +42,6 @@ namespace OnlineShop
             //btSave.Click += rep.BtSave_Click;
             
         }
-
         private string GetSelectedString(object selectedItem, string findStringToCell)
         {
             if (selectedItem == null) return null;
@@ -51,13 +50,14 @@ namespace OnlineShop
             return drw[findStringToCell].ToString();
         }
 
+        #region MENU
+
         private void CustomersEdit_Click(object sender, RoutedEventArgs e)
         {
             DataRowView dataRowView = (DataRowView)dataGridCustomers.SelectedItem;
             EditCustomerRowWindow window = new EditCustomerRowWindow(dataRowView);
             if (window.ShowDialog() == true) rep.CustomersCellEditEnding(null,null);
         }
-
         private void CustomersAdd_Click(object sender, RoutedEventArgs e)
         {
             //rep.dataRowView = (DataRowView)dataGridCustomers.Items[dataGridCustomers.Items.Count-1];
@@ -70,13 +70,39 @@ namespace OnlineShop
                 rep.CustomersCellEditEnding(null, null);
             }
         }
-
         private void CustomersDelete_Click(object sender, RoutedEventArgs e)
         {
             DataRowView dataRowView = (DataRowView)dataGridCustomers.SelectedItem;
             dataRowView.Delete();
             rep.CustomersCellEditEnding(null, null);
         }
+
+        private void OrdersEdit_Click(object sender, RoutedEventArgs e)
+        {
+            DataRowView dataRowView = (DataRowView)dataGridOrders.SelectedItem;
+            EditOrderRowWindow window = new EditOrderRowWindow(dataRowView);
+            if (window.ShowDialog() == true) rep.OrdersCellEditEnding(null, null);
+        }
+
+        private void OrdersAdd_Click(object sender, RoutedEventArgs e)
+        {
+            DataRow r = rep.OrdersTable.NewRow();
+
+            EditOrderRowWindow window = new EditOrderRowWindow(r);
+            if (window.ShowDialog() == true)
+            {
+                rep.OrdersTable.Rows.Add(r);
+                rep.OrdersCellEditEnding(null, null);
+            }
+        }
+
+        private void OrdersDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DataRowView dataRowView = (DataRowView)dataGridOrders.SelectedItem;
+            dataRowView.Delete();
+            rep.OrdersCellEditEnding(null, null);
+        }
+        #endregion
     }
 
 
@@ -167,11 +193,6 @@ namespace OnlineShop
                 Debug.WriteLine($"ERROR CustomersCellEditEnding: {ex.Message}");
             }
         }
-
-        //public void BtSave_Click(object sender, RoutedEventArgs e)
-        //{
-        //    oAdapter.Update(OrdersTable);
-        //}
 
         private async Task DatabaseQuery()
         {

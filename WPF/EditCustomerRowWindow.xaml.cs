@@ -23,16 +23,21 @@ namespace OnlineShop.WPF
     {
         private DataRow dataRow;
         private bool flag;
-        public EditCustomerRowWindow(DataRowView dataRowView)
+        private EditCustomerRowWindow()
         {
             InitializeComponent();
+        }
+
+        public EditCustomerRowWindow(DataRowView dataRowView) : this()
+        {
+            
             DataContext = dataRowView;
             flag = false;
         }
 
-        public EditCustomerRowWindow(DataRow dataRow)
+        public EditCustomerRowWindow(DataRow dataRow) : this()
         {
-            InitializeComponent();
+            
             this.dataRow = dataRow;
             flag = true;
             //DataContext = dataRow.Table;

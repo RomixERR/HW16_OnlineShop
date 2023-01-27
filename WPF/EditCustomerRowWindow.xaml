@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <Label x:Name="label_Copy" Content="РЕДАКТИРОВАНИЕ ИЛИ ДОБАВЛЕНИЕ НОВОГО КЛИЕНТА" RenderTransformOrigin="0.496,0.548"/>
-        <Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Height="52" Width="141" Click="btOk_Click" Grid.Row="2"/>
+        <Button x:Name="btOk" Content="Окончание редактирования" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Height="52" Width="231" Click="btOk_Click" Grid.Row="2"/>
         <StackPanel Grid.Row="1" Orientation="Vertical" >
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="label1" Content="Фамилия" Margin="-1,6,0,0" VerticalAlignment="Top" Width="200" Grid.Row="1" Height="26"/>

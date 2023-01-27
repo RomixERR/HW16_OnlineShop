@@ -94,6 +94,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\EditOrderRowWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +108,9 @@
     </Compile>
     <Compile Include="WPF\EditCustomerRowWindow.xaml.cs">
       <DependentUpon>EditCustomerRowWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\EditOrderRowWindow.xaml.cs">
+      <DependentUpon>EditOrderRowWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
