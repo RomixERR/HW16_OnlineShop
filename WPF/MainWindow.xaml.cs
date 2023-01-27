@@ -55,6 +55,7 @@ namespace OnlineShop
         private void CustomersEdit_Click(object sender, RoutedEventArgs e)
         {
             DataRowView dataRowView = (DataRowView)dataGridCustomers.SelectedItem;
+            if (dataRowView == null) return;
             EditCustomerRowWindow window = new EditCustomerRowWindow(dataRowView);
             if (window.ShowDialog() == true) rep.CustomersCellEditEnding(null,null);
         }
@@ -80,6 +81,7 @@ namespace OnlineShop
         private void OrdersEdit_Click(object sender, RoutedEventArgs e)
         {
             DataRowView dataRowView = (DataRowView)dataGridOrders.SelectedItem;
+            if (dataRowView == null) return;
             EditOrderRowWindow window = new EditOrderRowWindow(dataRowView);
             if (window.ShowDialog() == true) rep.OrdersCellEditEnding(null, null);
         }

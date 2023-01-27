@@ -8,13 +8,16 @@
         Title="MainWindow" Height="476" Width="1062">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="177*"/>
-            <RowDefinition Height="40*"/>
+            <RowDefinition/>
+            <RowDefinition Height="84.8"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="283*"/>
+            <ColumnDefinition Width="278*"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="248*"/>
         </Grid.ColumnDefinitions>
+        
+        <GridSplitter Grid.Column="1" Grid.RowSpan="1" Width="5" ResizeDirection="Columns" HorizontalAlignment="Center" ResizeBehavior="PreviousAndNext" Background="#FF428642" />
 
         <DataGrid x:Name="dataGridCustomers" d:ItemsSource="{Binding}"
                   IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" SelectionMode="Single" Grid.Column="0"
@@ -39,7 +42,7 @@
         </DataGrid>
 
         <DataGrid x:Name="dataGridOrders" d:ItemsSource="{Binding}"
-                  IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" SelectionMode="Single" Grid.Column="1"
+                  IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" SelectionMode="Single" Grid.Column="2"
                   >
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -55,8 +58,8 @@
                 <DataGridTextColumn x:Name="ONameOfProduct"  Binding="{Binding NameOfProduct}" Header="Наименование продукта" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btEmailFilter" Content="Фильтр по Email" HorizontalAlignment="Left" Margin="22,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
-        <Button x:Name="btNoFilter" Content="Сбросить фильтр" HorizontalAlignment="Left" Margin="154,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
+        <Button x:Name="btEmailFilter" Content="Фильтр по Email" HorizontalAlignment="Left" Margin="22,30,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
+        <Button x:Name="btNoFilter" Content="Сбросить фильтр" HorizontalAlignment="Left" Margin="168,30,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
 
 
     </Grid>
