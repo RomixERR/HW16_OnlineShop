@@ -247,7 +247,7 @@ namespace OnlineShop
             LocalDBUpdateCommand.Parameters.Add("@LastName", SqlDbType.NVarChar, 0, "LastName");
             LocalDBUpdateCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
             LocalDBUpdateCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
-            LocalDBUpdateCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int, 0, "PhoneNumber");
+            LocalDBUpdateCommand.Parameters.Add("@PhoneNumber", SqlDbType.NVarChar, 0, "PhoneNumber");
             LocalDBUpdateCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 0, "Email");
             LocalDBUpdateCommand.Parameters.Add("@FindID", SqlDbType.Int, 0, "ID").SourceVersion = DataRowVersion.Original;
             cAdapter.UpdateCommand = LocalDBUpdateCommand;
@@ -284,7 +284,7 @@ namespace OnlineShop
             LocalDBInsertCommand.Parameters.Add("@LastName", SqlDbType.NVarChar, 0, "LastName");
             LocalDBInsertCommand.Parameters.Add("@FirstName", SqlDbType.NVarChar, 0, "FirstName");
             LocalDBInsertCommand.Parameters.Add("@MiddleName", SqlDbType.NVarChar, 0, "MiddleName");
-            LocalDBInsertCommand.Parameters.Add("@PhoneNumber", SqlDbType.Int, 0, "PhoneNumber");
+            LocalDBInsertCommand.Parameters.Add("@PhoneNumber", SqlDbType.NVarChar, 0, "PhoneNumber");
             LocalDBInsertCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 0, "Email");
             LocalDBInsertCommand.Parameters.Add("@ID", SqlDbType.Int, 0, "ID").Direction = ParameterDirection.Output;
             cAdapter.InsertCommand = LocalDBInsertCommand;

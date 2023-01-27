@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineShop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="490" Width="800">
+        Title="MainWindow" Height="476" Width="1062">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="177*"/>
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="79*"/>
-            <ColumnDefinition Width="81*"/>
+            <ColumnDefinition Width="283*"/>
+            <ColumnDefinition Width="248*"/>
         </Grid.ColumnDefinitions>
 
         <DataGrid x:Name="dataGridCustomers" d:ItemsSource="{Binding}"
@@ -35,7 +35,7 @@
                 <DataGridTextColumn x:Name="CEmail"  Binding="{Binding Email}" Header="Email" IsReadOnly="True"/>
             </DataGrid.Columns>
 
-            
+
         </DataGrid>
 
         <DataGrid x:Name="dataGridOrders" d:ItemsSource="{Binding}"
@@ -50,7 +50,7 @@
         </DataGrid>
         <Button x:Name="btEmailFilter" Content="Фильтр по Email" HorizontalAlignment="Left" Margin="22,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
         <Button x:Name="btNoFilter" Content="Сбросить фильтр" HorizontalAlignment="Left" Margin="154,20,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.578" Height="30" Width="127"/>
-        
+
 
     </Grid>
 </Window>
